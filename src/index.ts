@@ -19,6 +19,8 @@ const renderPage = (pageName: string): void => {
         localStorage.setItem("Name", valueName);
 
         console.log(valueName);
+
+        renderPage("quiz");
       };
 
       const form = document.getElementById("form-start") as HTMLFormElement;

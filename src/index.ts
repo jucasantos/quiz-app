@@ -21,7 +21,7 @@ const handleLogIn = (event : Event ): void => {
     
     let valueName= inputName.value ; 
 
-    localStorage.setItem("ValueName", valueName);
+    localStorage.setItem("Name", valueName);
     
     console.log(valueName);
 

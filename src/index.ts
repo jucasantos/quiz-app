@@ -26,6 +26,10 @@ const renderPage = (pageName: string): void => {
             if (btnAnswers.length === currentQuestion.options.length) {
               btnAnswers.forEach((btn, index) => {
                 btn.textContent = currentQuestion.options[index];
+
+                btn.addEventListener("click", () => {
+                  localStorage.setItem("UserAnswer", index.toString());
+                });
               }); //respostas
             }
 
@@ -39,6 +43,8 @@ const renderPage = (pageName: string): void => {
             console.error("Erro ao carregar perguntas:", error);
           });
       }
+
+      //PAGE START
 
       const handleLogIn = (event: Event): void => {
         //evento submit
@@ -69,7 +75,36 @@ const renderPage = (pageName: string): void => {
       if (form) {
         form.addEventListener("submit", handleLogIn);
       }
+
+      const answerButton = document.getElementById("next-btn");
+      //botão responder
+      if (answerButton) {
+        answerButton.addEventListener("click", () => {
+          // verifica se a resposta tá no localStorage
+          const userAnswer = localStorage.getItem("UserAnswer");
+          if (userAnswer !== null) {
+            // pega a info da pontuação do localStorage
+            const currentScoresString = localStorage.getItem("scores") || "[]";
+            const currentScores = JSON.parse(currentScoresString);
+
+            // adc a pontuação no array
+            currentScores.push({
+              name: localStorage.getItem("Name"),
+              isRight: userAnswer === localStorage.getItem("CorrectAnswer"),
+            });
+
+            // guarda o array
+            localStorage.setItem("scores", JSON.stringify(currentScores));
+
+            // vaipara a página "leaderboard"
+            renderPage("leaderboard");
+          } else {
+            alert("Por favor, selecione uma alternativa");
+          }
+        });
+      }
     })
+
     .catch((error) => {
       console.error("Erro ao carregar página:", error);
     });
